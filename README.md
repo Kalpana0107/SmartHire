@@ -9,6 +9,7 @@
 ![Node.js](https://img.shields.io/badge/Backend-Node.js-green)
 ![Python](https://img.shields.io/badge/NLP-Python-yellow)
 ![Database](https://img.shields.io/badge/Database-SQLite%20%7C%20PostgreSQL-orange)
+![Views](https://hits.sh/github.com/Kalpana3007/SmartHire.svg?style=flat-square&label=views&color=0e75b6)
 
 ---
 
