@@ -4,9 +4,11 @@ const db = new Database("smarthire.db");
 
 db.exec(`CREATE TABLE IF NOT EXISTS candidates(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT,
-    resume_path TEXT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    filepath TEXT NOT NULL,
+    skilss TEXT,
+    match_score REAL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     
     );
