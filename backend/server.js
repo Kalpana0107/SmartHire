@@ -1,3 +1,6 @@
+const uploadRoutes = require("./routes/upload");
+const extractRoutes = require("./routes/extract");
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -12,6 +15,8 @@ app.use(express.json());
 
 const healthRoute = require("./routes/health");
 app.use("/health", healthRoute);
+app.use("/api", uploadRoutes);
+app.use("/api", extractRoutes);
 
 const db = require("./db/database");
 
