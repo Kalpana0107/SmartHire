@@ -18,6 +18,9 @@ app.use("/health", healthRoute);
 app.use("/api", uploadRoutes);
 app.use("/api", extractRoutes);
 
+const matchRoute = require("./routes/match");
+app.use("/match", matchRoute);
+
 const db = require("./db/database");
 
 app.listen(PORT , () => {
