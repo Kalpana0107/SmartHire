@@ -1,33 +1,36 @@
 const express = require("express");
 const router = express.Router();
 
-const{ spawn } = require("child_process");
+const { spawn } = require("child_process");
 const path = require("path");
 
 const db = require("../db/database");
 
 router.post("/extract/:candidateId", (req, res) => {
 
-    const{ candidateId } = req.params;
+    const { candidateId } = req.params;
 
     const candidate = db
-    .prepare("SELECT filepath FROM candidates WHERE id = ?")
-    .get(candidateId);
+        .prepare("SELECT filepath FROM candidates WHERE id = ?")
+        .get(candidateId);
 
-    if(!candidate){
+    if (!candidate) {
         return res.status(404).json({
             error: " candidate not found "
         });
 
     }
     const scriptPath = path.join(__dirname, "../python/extract_resume.py");
-    
-    const pythonExe = path.join(__dirname, "../venv/Scripts/python.exe");
+
+    const pythonExe =
+        process.env.NODE_ENV === "production"
+            ? "python3"
+            : path.join(__dirname, "../venv/Scripts/python.exe");
 
     const pythonProcess = spawn(pythonExe, [
-    scriptPath,
-    candidate.filepath
-]);
+        scriptPath,
+        candidate.filepath
+    ]);
     let output = "";
     let errorOutput = "";
 
@@ -41,41 +44,41 @@ router.post("/extract/:candidateId", (req, res) => {
 
     pythonProcess.on("close", (code) => {
 
-    if (code !== 0) {
-        return res.status(500).json({
-            error: "NLP extraction failed",
-            detail: errorOutput
-        });
-    }
+        if (code !== 0) {
+            return res.status(500).json({
+                error: "NLP extraction failed",
+                detail: errorOutput
+            });
+        }
 
-    try {
+        try {
 
-        const result = JSON.parse(output);
+            const result = JSON.parse(output);
 
-        db.prepare(`
+            db.prepare(`
             UPDATE candidates
             SET name = ?, skills = ?
             WHERE id = ?
         `).run(
-            result.name,
-            JSON.stringify(result.skills),
-            candidateId
-        );
+                result.name,
+                JSON.stringify(result.skills),
+                candidateId
+            );
 
-        res.status(200).json({
-            message: "Resume extracted successfully",
-            result
-        });
+            res.status(200).json({
+                message: "Resume extracted successfully",
+                result
+            });
 
-    } catch (e) {
+        } catch (e) {
 
-        res.status(500).json({
-            error: "Failed to parse NLP output"
-        });
+            res.status(500).json({
+                error: "Failed to parse NLP output"
+            });
 
-    }
+        }
 
-});
+    });
 
 });
 
