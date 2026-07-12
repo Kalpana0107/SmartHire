@@ -6,6 +6,16 @@ router.get("/candidates", (req, res) => {
 
     try {
 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const minScore = parseFloat(req.query.minScore) || 0;
+
+        const offset = (page - 1) * limit;
+        const total = db.prepare(`
+            SELECT COUNT(*)AS count
+            FROM candidates 
+            WHERE match_score >= ?
+            `).get(minScore).count;
         const candidates = db.prepare(`
 SELECT
     id,
@@ -15,9 +25,13 @@ SELECT
     skills,
     created_at
 FROM candidates
+WHERE match_score >= ?
 ORDER BY match_score DESC
+LIMIT ?
+OFFSET ?
 
-    `).all();
+
+    `).all(minScore, limit, offset);
 
         const parsed = candidates.map(candidates => ({
             ...candidates,
@@ -28,14 +42,21 @@ ORDER BY match_score DESC
         }));
         res.json({
             candidates: parsed,
-            total: parsed.length
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit)
+            }
+
         });
 
     } catch (err) {
         console.error(err);
 
         res.status(500).json({
-            error: " Failed to fetch candidates"
+            error: " Failed to fetch candidates",
+            detail: err.message
         });
 
     }
