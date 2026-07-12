@@ -16,20 +16,41 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use(express.json());
+
 
 
 const healthRoute = require("./routes/health");
+
+const matchRoute = require("./routes/match");
+
+const db = require("./db/database");
+
 app.use("/health", healthRoute);
 app.use("/api", uploadRoutes);
 app.use("/api", extractRoutes);
 app.use("/api", candidateRoutes);
-
-
-const matchRoute = require("./routes/match");
 app.use("/match", matchRoute);
 
-const db = require("./db/database");
+
+app.get("/test-error", (req, res, next) => {
+    next(new Error("this is a test error"));
+
+});
+
+
+app.use((err, req, res, next) => {
+    console.error("unhandled error:", err.stack);
+
+    res.status(err.status || 500).json({
+        error: err.message || "Internal Server Error",
+        ...(process.env.NODE_ENV !== "production" && {
+            stack: err.stack
+
+        })
+    })
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
