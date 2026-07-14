@@ -32,11 +32,6 @@ app.use("/api", candidateRoutes);
 app.use("/match", matchRoute);
 
 
-app.get("/test-error", (req, res, next) => {
-    next(new Error("this is a test error"));
-
-});
-
 
 app.use((err, req, res, next) => {
     console.error("unhandled error:", err.stack);
