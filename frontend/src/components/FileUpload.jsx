@@ -3,8 +3,6 @@
 
 import React, { useState } from 'react';
 import api from '../api/config';
-import './FileUpload.css';
-
 function FileUpload({ onUploadSuccess }) {
   // isDragging: true when user hovers a file over the drop zone
   const [isDragging, setIsDragging] = useState(false);
