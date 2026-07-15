@@ -25,12 +25,11 @@ const matchRoute = require("./routes/match");
 
 const db = require("./db/database");
 
-app.use("/health", healthRoute);
+app.use("/api", healthRoute);
 app.use("/api", uploadRoutes);
 app.use("/api", extractRoutes);
 app.use("/api", candidateRoutes);
-app.use("/match", matchRoute);
-
+app.use("/api", matchRoute);
 
 app.get("/test-error", (req, res, next) => {
     next(new Error("this is a test error"));
