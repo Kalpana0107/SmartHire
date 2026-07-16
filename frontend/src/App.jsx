@@ -10,8 +10,8 @@ import CTASection from './components/CTASection'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import Dashboard from './pages/Dashboard'
+import './index.css'
 import './App.css'
-
 function LandingPage() {
   return (
     <>
