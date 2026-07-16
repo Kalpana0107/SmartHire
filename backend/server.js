@@ -8,9 +8,18 @@ const candidateRoutes = require("./routes/candidates");
 
 require("dotenv").config();
 
+const fs = require('fs')
+if (!fs.existsSync('./uploads')) {
+  fs.mkdirSync('./uploads', { recursive: true })
+}
+if (!fs.existsSync('./db')) {
+  fs.mkdirSync('./db', { recursive: true })
+}
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
 
 
 app.use(cors({
