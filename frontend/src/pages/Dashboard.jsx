@@ -2,6 +2,7 @@
 // Manages shared state: which candidateId is "active" after upload.
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import FileUpload from '../components/FileUpload';
 import SkillBadges from '../components/SkillBadges';
@@ -10,6 +11,7 @@ import ScoreCard from '../components/ScoreCard';
 import CandidateList from '../components/CandidateList';
 
 function Dashboard() {
+  const navigate = useNavigate();
   // Track which candidate was just uploaded
   const [activeCandidateId, setActiveCandidateId] = useState(null);
 
@@ -21,6 +23,7 @@ function Dashboard() {
 
   return (
     <Layout>
+      <button onClick={() => navigate('/')}>← Back to Home</button>
       <div className="dashboard-grid">
 
         {/* LEFT PANEL: Upload + Skills */}
