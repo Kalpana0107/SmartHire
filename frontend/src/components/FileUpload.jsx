@@ -77,10 +77,21 @@ function FileUpload({ onUploadSuccess }) {
 
   return (
     <div
-      className={`drop-zone ${isDragging ? 'dragging' : ''}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      style={{
+        background: 'rgba(0, 212, 170, 0.05)',
+        border: '2px dashed rgba(0, 212, 170, 0.4)',
+        borderRadius: '12px',
+        padding: '32px',
+        color: '#94a3b8',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '12px'
+      }}
     >
       <p>Drag &amp; Drop your resume PDF here</p>
       <p>— or —</p>
@@ -90,17 +101,31 @@ function FileUpload({ onUploadSuccess }) {
         type="file"
         accept=".pdf"
         onChange={(e) => setFile(e.target.files[0])}
+        style={{ marginBottom: '12px' }}
       />
 
       <button
         onClick={handleUpload}
         disabled={status === 'uploading'}
+        style={{
+          background: '#00D4AA',
+          color: '#000000',
+          borderRadius: '8px',
+          padding: '10px 20px',
+          fontWeight: '600',
+          border: 'none',
+          cursor: 'pointer'
+        }}
       >
         {status === 'uploading' ? 'Uploading...' : 'Upload Resume'}
       </button>
 
       {message && (
-        <p className={`msg ${status}`}>
+        <p style={{
+          marginTop: '12px',
+          color: status === 'error' ? '#ef4444' : '#00D4AA',
+          fontWeight: '500'
+        }}>
           {message}
         </p>
       )}
