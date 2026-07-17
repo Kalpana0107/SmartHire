@@ -33,19 +33,35 @@ function JDInputForm({ candidateId, onScoreReceived }) {
   };
 
   return (
-    <div className="jd-form">
-      <h3>Paste Job Description</h3>
-
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <textarea
         rows={10}
         placeholder="Paste the full job description here..."
         value={jdText}
         onChange={(e) => setJdText(e.target.value)}
+        style={{
+          background: '#1a1a2e',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: '#ffffff',
+          borderRadius: '8px',
+          padding: '12px',
+          width: '100%',
+          boxSizing: 'border-box'
+        }}
       />
 
       <button
         onClick={handleSubmit}
         disabled={loading || !jdText.trim()}
+        style={{
+          background: '#00D4AA',
+          color: '#000000',
+          borderRadius: '8px',
+          padding: '10px 20px',
+          fontWeight: '600',
+          border: 'none',
+          cursor: 'pointer'
+        }}
       >
         {loading ? 'Calculating...' : 'Calculate Match Score'}
       </button>
